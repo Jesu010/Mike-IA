@@ -1,0 +1,15 @@
+MIKEY AI - ARCHIVOS INICIALES DEL SERVIDOR
+
+Contenido:
+- backend/main.py: API de Mikey AI.
+- backend/requirements.txt: dependencias Python.
+- render.yaml: configuración de despliegue en Render.
+
+IMPORTANTE:
+1. No agregues tu clave de OpenAI a estos archivos.
+2. No publiques la clave en GitHub ni la compartas por chat.
+3. La API queda sin funcionar hasta que OPENAI_API_KEY se configure como variable secreta en Render.
+4. Aunque el alojamiento pudiera usar un nivel gratuito, las consultas a OpenAI API pueden generar cargos aparte.
+5. No pulses Deploy ni habilites facturación hasta decidirlo expresamente.
+
+Para GitHub, subí la carpeta backend (con los dos archivos dentro) y render.yaml en la raíz del repositorio.

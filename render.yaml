@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: mikey-ai-api
+    runtime: python
+    plan: free
+    region: oregon
+    branch: principal
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: ALLOWED_ORIGIN
+        value: https://jesu010.github.io
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4.1-mini
