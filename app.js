@@ -7,27 +7,40 @@ function addMessage(text, who) {
   messages.appendChild(el);
   messages.scrollTop = messages.scrollHeight;
 }
-function demoReply(text) {
-  const t = text.toLowerCase();
-  if (t.includes("ganancia") || t.includes("venta") || t.includes("margen")) {
-    return "¡Vamos con los números! Para calcular una ganancia real necesito el costo del producto, el precio de venta y los gastos o comisiones. Esta respuesta es una demostración; más adelante conectaremos el motor de IA.";
+async function consultarMikey(texto) {
+  const respuesta = await fetch("https://mike-ia.onrender.com/charlar", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ mensaje: texto })
+  });
+
+  const datos = await respuesta.json();
+
+  if (!respuesta.ok) {
+    throw new Error(datos.detail || "No pude responder.");
   }
-  if (t.includes("clase") || t.includes("educación") || t.includes("educacion")) {
-    return "Puedo ayudarte a preparar objetivos, contenidos, actividades y evaluación para una clase. En la versión conectada podremos generar propuestas adaptadas al año y al tiempo disponible.";
-  }
-  if (t.includes("día") || t.includes("dia") || t.includes("organizar")) {
-    return "Podemos organizar tu día en tres pasos: definir prioridades, ordenar horarios y reservar tiempo para imprevistos. También podés cargar tus pendientes en «Mis tareas».";
-  }
-  return "¡Te leo! En esta primera versión puedo mostrarte cómo funciona la interfaz y guardar tus tareas en este dispositivo. La conexión con inteligencia artificial real será una próxima etapa.";
+
+  return datos.respondedor;
 }
-$("#chatForm").addEventListener("submit", (e) => {
+$("#chatForm").addEventListener("submit", async (e) => {
   e.preventDefault();
+
   const input = $("#chatInput");
   const value = input.value.trim();
+
   if (!value) return;
+
   addMessage(value, "user");
   input.value = "";
-  window.setTimeout(() => addMessage(demoReply(value), "assistant"), 350);
+
+  try {
+    const respuesta = await consultarMikey(value);
+    addMessage(respuesta, "assistant");
+  } catch (error) {
+    addMessage("No pude conectarme con Mikey. Revisá la conexión e intentá nuevamente.", "assistant");
+  }
 });
 document.querySelectorAll(".suggestion").forEach(b => b.addEventListener("click", () => {
   $("#chatInput").value = b.dataset.prompt;
