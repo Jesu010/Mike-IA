@@ -3,7 +3,7 @@ import os
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from openai import OpenAI
+from google import genai
 from pydantic import BaseModel, Field
 
 app = FastAPI(title="API de IA de Mikey", version="1.0.0")
@@ -38,32 +38,38 @@ def salud():
 
 @app.post("/charlar")
 def charlar(solicitud: SolicitudChat):
-    clave_api = os.getenv("CLAVE_API_OPENAI")
+    clave_gemini = os.getenv("GEMINI_API_KEY")
 
-    if not clave_api:
+    if not clave_gemini:
         raise HTTPException(
             status_code=503,
-            detail="La conexión con IA todavía no está activada."
+            detail="La conexión con Gemini todavía no está configurada."
         )
 
     try:
-        cliente = OpenAI(api_key=clave_api)
+        cliente = genai.Client(api_key=clave_gemini)
 
-        respuesta = cliente.responses.create(
-            model=os.getenv("MODELO_OPENAI", "gpt-4.1-mini"),
-            instructions=(
+        respuesta = cliente.models.generate_content(
+            model="gemini-3.8-flash",
+            contents=(
                 "Sos Mikey AI, un asistente virtual útil, claro y confiable. "
-                "Respondé en español rioplatense, con tono amable. "
-                "Si no sabés algo, decilo con claridad."
-            ),
-            input=solicitud.mensaje,
+                "Respondé en español rioplatense, con tono amable y natural. "
+                "Ayudá tanto con tareas personales como empresariales. "
+                "Si no sabés algo, decilo con claridad.\n\n"
+                f"Mensaje del usuario: {solicitud.mensaje}"
+            )
         )
 
-        return {"responder": respuesta.output_text}
+        texto = respuesta.text
 
-    except Exception:
+        if not texto:
+            raise ValueError("Gemini no devolvió una respuesta de texto.")
+
+        return {"respondedor": texto}
+
+    except Exception as error:
+        print(f"Error al consultar Gemini: {error}")
         raise HTTPException(
             status_code=502,
             detail="No se pudo completar la consulta. Revisá la configuración."
         )
-
