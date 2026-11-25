@@ -1,0 +1,12 @@
+{
+  "name": "Mikey AI",
+  "short_name": "Mikey AI",
+  "description": "Tu asistente personal y empresarial",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#07122d",
+  "theme_color": "#07122d",
+  "icons": [
+    {"src":"assets/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}

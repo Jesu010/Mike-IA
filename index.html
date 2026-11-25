@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07122d">
+  <meta name="description" content="Mikey AI, tu asistente personal y empresarial.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>Mikey AI</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Mikey AI inicio">
+        <span class="brand-mark">M</span>
+        <span><strong>Mikey <em>AI</em></strong><small>Tu mundo, más inteligente</small></span>
+      </a>
+      <button id="modeToggle" class="mode-toggle" type="button">Personal ▾</button>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="orb"><span>✦</span></div>
+        <p class="eyebrow">ASISTENTE INTELIGENTE</p>
+        <h1>¡Hola! Soy Mikey.</h1>
+        <p class="hero-copy">Estoy acá para ayudarte a organizar, crear y resolver.</p>
+      </section>
+
+      <section class="chat-card" aria-label="Asistente">
+        <div class="section-heading">
+          <div><span class="status-dot"></span><strong>Conversá conmigo</strong></div>
+          <span class="tiny-label">DEMO V1</span>
+        </div>
+        <div id="messages" class="messages" aria-live="polite">
+          <div class="bubble assistant">¡Hola! Soy Mikey AI. Esta es nuestra primera versión gratuita. ¿Qué necesitás hacer hoy?</div>
+        </div>
+        <div class="suggestions">
+          <button class="suggestion" data-prompt="Ayudame a organizar mi día">Organizar mi día</button>
+          <button class="suggestion" data-prompt="Quiero calcular la ganancia de una venta">Calcular una ganancia</button>
+          <button class="suggestion" data-prompt="Necesito preparar una clase de Educación Física">Preparar una clase</button>
+        </div>
+        <form id="chatForm" class="composer">
+          <input id="chatInput" type="text" placeholder="Escribile a Mikey..." autocomplete="off" aria-label="Mensaje">
+          <button class="send-btn" type="submit" aria-label="Enviar mensaje">➤</button>
+        </form>
+        <p class="demo-note">Las respuestas son demostrativas; todavía no hay conexión a una IA externa.</p>
+      </section>
+
+      <section class="tools-section">
+        <div class="section-title"><div><p class="eyebrow">TU ESPACIO</p><h2>¿Qué querés hacer?</h2></div></div>
+        <div class="feature-grid">
+          <button class="feature" data-feature="Negocios"><span class="feature-icon">▣</span><strong>Negocios</strong><small>Ventas y organización</small></button>
+          <button class="feature" data-feature="Organización"><span class="feature-icon">◷</span><strong>Organización</strong><small>Tareas y pendientes</small></button>
+          <button class="feature" data-feature="Educación"><span class="feature-icon">⌑</span><strong>Educación</strong><small>Clases y documentos</small></button>
+          <button class="feature" data-feature="Herramientas"><span class="feature-icon">⌘</span><strong>Herramientas</strong><small>Cálculos y soluciones</small></button>
+        </div>
+      </section>
+
+      <section class="tasks-card">
+        <div class="tasks-heading"><div><p class="eyebrow">PRODUCTIVIDAD</p><h2>Mis tareas</h2></div><span id="taskCount" class="count">0</span></div>
+        <form id="taskForm" class="task-form">
+          <input id="taskInput" type="text" placeholder="Agregar una tarea..." aria-label="Nueva tarea">
+          <button type="submit">Agregar</button>
+        </form>
+        <ul id="taskList" class="task-list"></ul>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navegación">
+      <a class="nav-item active" href="#inicio"><span>⌂</span>Inicio</a>
+      <a class="nav-item" href="#asistente" id="navAssistant"><span>✧</span>Asistente</a>
+      <a class="nav-item" href="#espacio"><span>▦</span>Espacio</a>
+      <a class="nav-item" href="#tareas"><span>☷</span>Tareas</a>
+    </nav>
+    <footer>MIKEY AI · PRIMERA VERSIÓN GRATUITA</footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
