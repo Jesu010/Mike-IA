@@ -50,7 +50,7 @@ def charlar(solicitud: SolicitudChat):
         cliente = genai.Client(api_key=clave_gemini)
 
         respuesta = cliente.models.generate_content(
-            model="gemini-3.8-flash",
+          model="gemini-3.5-flash-lite",
             contents=(
                 "Sos Mikey AI, un asistente virtual útil, claro y confiable. "
                 "Respondé en español rioplatense, con tono amable y natural. "
