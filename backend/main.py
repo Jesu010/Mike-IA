@@ -1,47 +1,69 @@
+
 import os
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from openai import OpenAI
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="Mikey AI API", version="0.1.0")
+app = FastAPI(title="API de IA de Mikey", version="1.0.0")
 
-allowed_origin = os.getenv("ALLOWED_ORIGIN", "https://jesu010.github.io")
+origen_permitido = os.getenv(
+    "ORIGEN_PERMITIDO",
+    "https://jesu010.github.io"
+)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[allowed_origin],
+    allow_origins=[origen_permitido],
     allow_credentials=False,
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type", "Authorization"],
 )
 
-class ChatRequest(BaseModel):
-    message: str = Field(min_length=1, max_length=8000)
+
+class SolicitudChat(BaseModel):
+    mensaje: str = Field(min_length=1, max_length=8000)
+
 
 @app.get("/")
-def root():
-    return {"app": "Mikey AI API", "status": "ok"}
+def inicio():
+    return {"aplicacion": "API de IA de Mikey", "estado": "OK"}
 
-@app.get("/health")
-def health():
-    return {"status": "ok"}
 
-@app.post("/chat")
-def chat(payload: ChatRequest):
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        raise HTTPException(status_code=503, detail="La conexión con IA todavía no está activada.")
+@app.get("/salud")
+def salud():
+    return {"estado": "OK"}
+
+
+@app.post("/charlar")
+def charlar(solicitud: SolicitudChat):
+    clave_api = os.getenv("CLAVE_API_OPENAI")
+
+    if not clave_api:
+        raise HTTPException(
+            status_code=503,
+            detail="La conexión con IA todavía no está activada."
+        )
+
     try:
-        from openai import OpenAI
-        client = OpenAI(api_key=api_key)
-        response = client.responses.create(
-            model=os.getenv("OPENAI_MODEL", "gpt-4.1-mini"),
+        cliente = OpenAI(api_key=clave_api)
+
+        respuesta = cliente.responses.create(
+            model=os.getenv("MODELO_OPENAI", "gpt-4.1-mini"),
             instructions=(
                 "Sos Mikey AI, un asistente virtual útil, claro y confiable. "
                 "Respondé en español rioplatense, con tono amable. "
                 "Si no sabés algo, decilo con claridad."
             ),
-            input=payload.message,
+            input=solicitud.mensaje,
         )
-        return {"reply": response.output_text}
+
+        return {"responder": respuesta.output_text}
+
     except Exception:
-        raise HTTPException(status_code=502, detail="No se pudo completar la consulta. Revisá la configuración del servidor.")
+        raise HTTPException(
+            status_code=502,
+            detail="No se pudo completar la consulta. Revisá la configuración."
+        )
+
